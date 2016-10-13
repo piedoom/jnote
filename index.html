@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> test </title>
+        <meta charset="utf-8"/>
+        <style>
+        img{
+            max-width: 800px; 
+            width: 100%; 
+            margin: 0 auto; 
+        }
+        .jnote{
+            display: block;
+        }
+        .jnote-canvas{
+            display: block;
+        }
+        .jnote-box{
+            display: none;
+            position: absolute;
+        }
+        body{
+            margin: 0;
+        }
+        </style>
+        <script src="jnote.js"></script>
+    </head>
+    <body>
+        <img class="jnote" src="image.png" data-jnote='
+        [
+            {
+                "title": "wow",
+                "caption": "this is some text",
+                "x": 0.1,
+                "y": 0.2
+            },
+            {
+                "title": "Move",
+                "caption": "this is some more text",
+                "x": 0.3,
+                "y": 0.6
+            }
+        ]
+        ' />
+    </body>
+    <script>jnote.init();</script>
+</html>
