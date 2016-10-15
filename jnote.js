@@ -10,7 +10,7 @@ var jnote = (function(){
         settings: {
             radius: 10,
             hoverPadding: 18,
-            color: "rgba(0,0,255,0.5)"
+            color: "red"
         },
 
         // hack for unique IDs
@@ -28,6 +28,7 @@ var jnote = (function(){
             for (var i = 0; i < this.items.length; i++){
                 var item = this.items[i];
                 item.sheet = new sheet(item);
+                item.sheet.canvas.draw();
             }
 
             // setup canvas to resize when window is resized
@@ -78,6 +79,7 @@ var jnote = (function(){
         this.canvas.ctx = this.canvas.getContext("2d");
         this.canvas.style.position = "relative";
         el.parentNode.insertBefore(this.canvas, el);
+        this.canvas.expansion = 0;
 
         // create (and hide) comment divs
         this.windows = [];
@@ -107,10 +109,18 @@ var jnote = (function(){
             com.style.display = "none";
         }
 
-        this.canvas.draw = function(){
+        this.canvas.draw = function(time){
+
+            // clear canvas
+            this.ctx.clearRect(0,0,el.width, el.height);
+
+            // base circle
+            this.ctx.fillStyle = jnote.settings.color;
+            this.ctx.restore();
+            this.ctx.globalAlpha = 0.6;
+
             for (var i = 0; i < sheet.comments.length; i++){
                 var comment = sheet.comments[i];
-                this.ctx.fillStyle = jnote.settings.color;
                 this.ctx.beginPath();
                 this.ctx.arc(
                     comment.x * this.width,
@@ -121,6 +131,34 @@ var jnote = (function(){
                     false);
                 this.ctx.fill();
             }
+
+            // expanding circle
+            var maxRadius = jnote.settings.radius * 1.5;
+            if (this.expansion < maxRadius){
+            this.expansion += 0.1;
+            }else{
+                this.expansion = 0;
+            }
+
+            this.ctx.save();
+
+            // fade out to 0 opacity
+            this.ctx.globalAlpha = (Math.round(((maxRadius - this.expansion) / maxRadius) * 50) / 50) / 2;
+
+            for (var i = 0; i < sheet.comments.length; i++){
+                var comment = sheet.comments[i];
+                this.ctx.beginPath();
+                this.ctx.arc(
+                    comment.x * this.width,
+                    comment.y * this.height,
+                    jnote.settings.radius + this.expansion,
+                    0,
+                    Math.PI * 2,
+                    false);
+                this.ctx.fill();
+            }
+
+            requestAnimationFrame(this.draw.bind(this));
         };  
 
         // add function for canvas
@@ -129,7 +167,6 @@ var jnote = (function(){
             this.height = el.height;
             this.style.marginBottom = "-" + el.height + "px";
             this.style.left = el.offsetLeft + "px";
-            this.draw();
         };      
 
         this.canvas.onmousemove = function (event){
@@ -145,8 +182,11 @@ var jnote = (function(){
 
                 if (dist <= Math.pow(jnote.settings.radius + jnote.settings.hoverPadding, 2)){
                     sheet.showComment(comment);
+                    document.body.style.cursor = 'pointer';
+                    break;
                 } else {
                     sheet.hideComment(comment);
+                    document.body.style.cursor = 'default';
                 }
             }
         }
