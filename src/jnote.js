@@ -78,35 +78,24 @@ var jnote = (function(){
         this.canvas.classList.add("jnote-canvas");
         this.canvas.ctx = this.canvas.getContext("2d");
         this.canvas.style.position = "relative";
-        el.parentNode.insertBefore(this.canvas, el);
+        
         this.canvas.expansion = 0;
 
-        // create (and hide) comment divs
-        this.windows = [];
-        for (var i = 0; i < this.comments.length; i++){
-            var com = this.comments[i];
-            var win = document.createElement("DIV");
-            win.classList.add("jnote-box");
-            win.id = "jnote-comment-" + com.id;
-            var title = document.createElement("H2");
-            title.classList.add("jnote-title");
-            title.innerText = com.title;
-            var body = document.createElement("P");
-            body.classList.add("jnote-body");
-            body.innerText = com.caption;
-            win.appendChild(title);
-            win.appendChild(body);
-            el.parentNode.insertBefore(win, el);
-        }   
+        // create main div that will display our comments
+        this.window = document.createElement("DIV");
+        this.window.classList.add("jnote-window");
+        el.parentNode.insertBefore(this.canvas, el);
+        el.parentNode.insertBefore(this.window, el);
 
         this.showComment = function(comment){
-            var com = document.getElementById("jnote-comment-" + comment.id);
-            com.style.display = "block";
+            this.window.style.opacity = 1;
+            this.window.style.left = el.offsetLeft + (comment.x * el.width) + "px";
+            this.window.style.top = el.offsetTop + (comment.y * el.height) + "px";
+            this.window.innerHTML = "<h2 class='jnote-header'>" + comment.title + "</h2>" + "<p>" + comment.caption + "</p>";
         }
 
         this.hideComment = function(comment){
-            var com = document.getElementById("jnote-comment-" + comment.id);
-            com.style.display = "none";
+            this.window.style.opacity = 0;
         }
 
         this.canvas.draw = function(time){
@@ -170,8 +159,8 @@ var jnote = (function(){
         };      
 
         this.canvas.onmousemove = function (event){
-            var mouseX = event.x - el.offsetLeft
-            var mouseY = event.y - el.offsetTop;
+            var mouseX = event.clientX - this.offsetLeft;
+            var mouseY = event.pageY - this.offsetTop;
 
             // use trig to see which circle we are in, if any
             for (var i = 0; i < sheet.comments.length; i++){

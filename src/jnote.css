@@ -1,0 +1,15 @@
+.jnote{
+    display: block;
+}
+.jnote-canvas{
+    display: block;
+}
+.jnote-window{
+    opacity: 0;
+    position: absolute;
+    background: white;
+    padding: 24px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.1);
+    transition: opacity 0.2s ease-in-out;
+}
