@@ -84,8 +84,9 @@ var jnote = (function(){
         // create main div that will display our comments
         this.window = document.createElement("DIV");
         this.window.classList.add("jnote-window");
-        el.parentNode.insertBefore(this.canvas, el);
         el.parentNode.insertBefore(this.window, el);
+        el.parentNode.insertBefore(this.canvas, el);
+       
 
         this.showComment = function(comment){
             this.window.style.opacity = 1;
@@ -154,8 +155,8 @@ var jnote = (function(){
         this.canvas.resize = function(){
             this.width = el.width;
             this.height = el.height;
+            this.style.margin = el.style.margin;
             this.style.marginBottom = "-" + el.height + "px";
-            this.style.left = el.offsetLeft + "px";
         };      
 
         this.canvas.onmousemove = function (event){
