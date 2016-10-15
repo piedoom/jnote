@@ -30,21 +30,72 @@
       <img src="media/example.png" style="margin: 0 auto; display: block;" class="jnote" data-jnote='
         [
           {
-            "x": 0.2,
+            "x": 0.5,
             "y": 0.26,
             "title": "View this on github!",
             "caption": "Do it!"
           },
           {
-            "x": 0.2,
-            "y": 0.3,
-            "title": "View this on github!",
-            "caption": "Do it!"
+            "x": 0.1,
+            "y": 0.64,
+            "title": "Here is our title",
+            "caption": "And a description to go along with it."
           }
 
         ]
       '/>
 
+      <h2>How-to</h2>
+      <p>
+        First, download <a href="https://github.com/piedoom/jnote/tree/master/src">both jnote files from the github repo</a> and link them to your project.
+      </p>
+      <p>
+        Next, you'll want to initialize jnote by adding the following to the bottom of your body.
+      </p>
+
+      <p>
+        <code>
+        jnote.init();
+        </code>
+      </p>
+
+      <p> Thirdly, you'll need an image to annotate. </p>
+
+      <p>
+      <pre>
+&lt;img src=&quot;media/example.png&quot; style=&quot;margin: 0 auto; display: block;&quot; class=&quot;jnote&quot; data-jnote='
+[
+  {
+    &quot;x&quot;: 0.5,
+    &quot;y&quot;: 0.26,
+    &quot;title&quot;: &quot;View this on github!&quot;,
+    &quot;caption&quot;: &quot;Do it!&quot;
+  },
+  {
+    &quot;x&quot;: 0.1,
+    &quot;y&quot;: 0.64,
+    &quot;title&quot;: &quot;Here is our title&quot;,
+    &quot;caption&quot;: &quot;And a description to go along with it.&quot;
+  }
+
+]
+'/&gt;
+      </pre>
+      </p>
+
+      <h2>JSON explained</h2>
+      <p> 
+        jnote uses JSON stored in a data attribute to format your image.  The cool part about this is unsupported browsers just fall back to a regular image.
+
+        Notice that the "x" and "y" attributes are values from 0 to 1, and not pixel values.  This is because jnote is responsive.  Because judging x and y values can be hard to judge,
+        I've made a simple tool below.  Upload an image, and then click to generate some JSON.
+      </p>
+
+      <input type="file" id="imageLoader"><br>
+      <canvas id="imageCanvas"></canvas>
+
+      <pre id="output">
+      </pre>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/piedoom/jnote">jnote</a> is maintained by <a href="https://github.com/piedoom">piedoom</a>.</span>
@@ -57,6 +108,61 @@
   <script>
     jnote.settings.color = "#075eff";
     jnote.init();
-  </script>
+
+    var imageLoader = document.getElementById('imageLoader');
+    imageLoader.addEventListener('change', handleImage, false);
+    var canvas = document.getElementById('imageCanvas');
+    var ctx = canvas.getContext('2d');
+    var num = 1;
+    var json = [];
+    var out = document.getElementById('output');
+
+    function handleImage(e){
+      var reader = new FileReader();
+      reader.onload = function(event){
+          var img = new Image();
+          var width = document.querySelector(".main-content").offsetWidth;
+          img.onload = function(){
+              canvas.width = width;
+              canvas.height = width * img.height / width;
+              ctx.drawImage(img,0, 0, width, canvas.height);
+          }
+          img.src = event.target.result;
+      }
+      reader.readAsDataURL(e.target.files[0]);     
+    }
+
+    canvas.onclick = function(e){
+      var pos = getMousePos(canvas, e);
+      console.log(pos.x);
+      ctx.beginPath();
+      ctx.fillStyle="#f95818";
+      ctx.arc(pos.x, pos.y, 12, 0, Math.PI * 2, false);
+      var text = num;
+      ctx.textBaseline = "top";
+      ctx.fill();
+      ctx.fillStyle="white";
+      ctx.fillText(text, pos.x-12/4 ,pos.y-12/2);
+      json.push(new Note(pos.x / canvas.width, pos.y / canvas.height, num));
+      num++;
+      out.innerText = JSON.stringify(json, null, 2);
+    }
+
+    function Note(x, y, title){
+      this.x = x;
+      this.y = y;
+      this.title = title;
+      this.caption = "The caption for note number " + title;
+    }
+
+    function getMousePos(canvas, evt) {
+      var rect = canvas.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+  }
+
+    </script>
   </body>
 </html>
