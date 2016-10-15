@@ -74,6 +74,14 @@ jnote.settings.hoverPadding = 10; // adds padding to dot so caption will appear 
 jnote.settings.color = "green"; // sets the color for the dot
 ```
 
+Caveats
+======
+As of now, setting the "x" and "y" position of an annotation is a lot of trial and error.  In the future, I will make a small utility
+to easily generate captions. 
+
+Also, please note that jnote does NOT filter HTML, so if you are using this with user-specified content, you must filter
+tags properly to prevent XSS.
+
 
 Examples
 ======
