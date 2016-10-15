@@ -76,8 +76,8 @@ jnote.settings.color = "green"; // sets the color for the dot
 
 Caveats
 ======
-As of now, setting the "x" and "y" position of an annotation is a lot of trial and error.  In the future, I will make a small utility
-to easily generate captions. 
+Use the utility on the webpage to generate JSON
+https://piedoom.github.io/jnote/
 
 Also, please note that jnote does NOT filter HTML, so if you are using this with user-specified content, you must filter
 tags properly to prevent XSS.
