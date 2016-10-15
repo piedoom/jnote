@@ -3,6 +3,9 @@ jnote
 
 A simple, extremely lightweight, responsive javascript image-annotation system.
 
+![](repo/example.gif)
+
+
 What does it do?
 ======
 
