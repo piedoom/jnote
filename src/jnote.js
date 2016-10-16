@@ -1,4 +1,3 @@
-"use strict";
 var jnote = (function(){
     // our main module
     var jnote = {
@@ -86,7 +85,6 @@ var jnote = (function(){
         this.window.classList.add("jnote-window");
         el.parentNode.insertBefore(this.window, el);
         el.parentNode.insertBefore(this.canvas, el.nextSibling);
-       
 
         this.showComment = function(comment){
             this.window.style.opacity = 1;
@@ -160,8 +158,11 @@ var jnote = (function(){
         };      
 
         this.canvas.onmousemove = function (event){
-            var mouseX = event.clientX - this.offsetLeft;
-            var mouseY = event.pageY - this.offsetTop;
+            var mouseX = event.offsetX;
+            var mouseY = event.offsetY;
+            console.dir(event);
+            
+            console.log(mouseX + " " + mouseY);
 
             // use trig to see which circle we are in, if any
             for (var i = 0; i < sheet.comments.length; i++){

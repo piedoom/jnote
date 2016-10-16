@@ -5,9 +5,7 @@
         <meta charset="utf-8"/>
         <style>
         img{
-            max-width: 800px; 
-            width: 100%; 
-            margin: 0 auto; 
+            width: 100%;
         }
         body{
             margin: 0;
@@ -19,40 +17,44 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
-        <img class="jnote" src="image.png" data-jnote='
-        [
-            {
-                "title": "wow",
-                "caption": "this is some text",
-                "x": 0.1,
-                "y": 0.2
-            },
-            {
-                "title": "What is this?",
-                "caption": "Please be more specific by labeling asset.",
-                "x": 0.3,
-                "y": 0.6
-            }
-        ]
-        ' />
+        <h1> Test </h1>
+        <div style="position: relative; height: 100px; display: table; clear: both;"></div>
+        <div style="margin: 0 auto; max-width: 800px; width: 100%;">
+            <img class="jnote" src="image.png" data-jnote='
+            [
+                {
+                    "title": "wow",
+                    "caption": "this is some text",
+                    "x": 0.1,
+                    "y": 0.2
+                },
+                {
+                    "title": "What is this?",
+                    "caption": "Please be more specific by labeling asset.",
+                    "x": 0.3,
+                    "y": 0.6
+                }
+            ]
+            ' />
 
 
-        <img class="jnote" src="image.png" data-jnote='
-        [
-            {
-                "title": "wow",
-                "caption": "this is some text",
-                "x": 0.1,
-                "y": 0.2
-            },
-            {
-                "title": "Move",
-                "caption": "this is some more text",
-                "x": 0.3,
-                "y": 0.6
-            }
-        ]
-        ' />
+            <img class="jnote" src="image.png" data-jnote='
+            [
+                {
+                    "title": "wow",
+                    "caption": "this is some text",
+                    "x": 0.1,
+                    "y": 0.2
+                },
+                {
+                    "title": "Move",
+                    "caption": "this is some more text",
+                    "x": 0.3,
+                    "y": 0.6
+                }
+            ]
+            ' />
+        </div>
     </body>
     <script>jnote.init();</script>
 </html>
